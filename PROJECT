@@ -1,0 +1,19 @@
+domain: example.org
+layout:
+- go.kubebuilder.io/v3
+plugins:
+  manifests.sdk.operatorframework.io/v2: {}
+  scorecard.sdk.operatorframework.io/v2: {}
+projectName: opdemo
+repo: github.com/tqtcloud/opdemo
+resources:
+- api:
+    crdVersion: v1
+    namespaced: true
+  controller: true
+  domain: example.org
+  group: app
+  kind: AppService
+  path: github.com/tqtcloud/opdemo/api/v1beta1
+  version: v1beta1
+version: "3"
