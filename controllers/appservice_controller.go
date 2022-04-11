@@ -39,7 +39,11 @@ type AppServiceReconciler struct {
 	Scheme *runtime.Scheme
 }
 
+// 如下添加rbac针对 deployment  service 能使得Pod在集群内部运行是得到最其资源的操作
+
 //+kubebuilder:rbac:groups=app.example.org,resources=appservices,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=apps,resources=deployment,verbs=get;list;watch;create;update;patch;delete
+//+kubebuilder:rbac:groups=core,resources=service,verbs=get;list;watch;create;update;patch;delete
 //+kubebuilder:rbac:groups=app.example.org,resources=appservices/status,verbs=get;update;patch
 //+kubebuilder:rbac:groups=app.example.org,resources=appservices/finalizers,verbs=update
 
@@ -59,7 +63,7 @@ func (r *AppServiceReconciler) Reconcile(ctx context.Context, req ctrl.Request) 
 	// 业务逻辑实现
 	// 获取 AppService 实例
 	var appService appv1beta1.AppService
-	if err := r.Client.Get(ctx, req.NamespacedName, &appService); err != nil {
+	if err := r.Get(ctx, req.NamespacedName, &appService); err != nil {
 		// myapp 被删除忽略
 		return ctrl.Result{}, client.IgnoreNotFound(err)
 	}
